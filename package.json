@@ -1,0 +1,14 @@
+{
+  "name": "tree-sitter-nix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Justin Woo",
+  "license": "MIT",
+  "devDependencies": {
+    "tree-sitter-cli": "^0.14.5"
+  }
+}
