@@ -1,0 +1,33 @@
+=====================================
+Identifiers
+=====================================
+
+gnumake
+
+---
+
+(source_file
+  (expr (expr_simple (identifier))))
+
+=====================================
+Integers
+=====================================
+
+1
+
+---
+
+(source_file
+  (expr (expr_simple (integer))))
+
+
+=====================================
+Double quoted strings
+=====================================
+
+"hi"
+
+---
+
+(source_file
+  (expr (expr_simple (string_double_quoted))))
