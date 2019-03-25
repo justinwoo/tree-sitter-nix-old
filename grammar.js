@@ -4,11 +4,13 @@ module.exports = grammar({
   rules: {
     source_file: $ => repeat($.expr),
 
-    expr: $ => choice($.expr_simple),
+    expr: $ => choice($.expr_let_in, $.expr_simple),
 
     expr_op: $ => choice(seq("-", $.expr_op), $.expr_app),
 
     expr_app: $ => choice(seq($.expr_app, $.expr_select), $.expr_select),
+
+    expr_let_in: $ => seq("let", repeat1($.binding), "in", $.expr),
 
     expr_select: $ => choice($.expr_simple),
 
@@ -23,6 +25,8 @@ module.exports = grammar({
         $.s_path,
         $.uri
       ),
+
+    binding: $ => seq($.identifier, "=", $.expr, ";"),
 
     string_double_quoted: $ =>
       seq(

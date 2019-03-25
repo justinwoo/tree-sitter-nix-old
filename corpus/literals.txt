@@ -88,3 +88,18 @@ Two quotes strings with shell vars
 
 (source_file
   (expr (expr_simple (string_two_quotes))))
+
+=====================================
+let-in statement
+=====================================
+
+let
+  a = 1;
+in
+  a
+
+---
+
+(source_file
+  (expr (expr_let_in (binding (identifier) (expr (expr_simple (integer))))
+                     (expr (expr_simple (identifier))))))
