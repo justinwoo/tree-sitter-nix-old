@@ -91,6 +91,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "string_two_quotes"
+        },
+        {
+          "type": "SYMBOL",
           "name": "h_path"
         },
         {
@@ -111,8 +115,24 @@
           "value": "\""
         },
         {
-          "type": "SYMBOL",
-          "name": "string_parts"
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "string_interp"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[^\\$\"]+"
+              },
+              {
+                "type": "PATTERN",
+                "value": "\\$[^{]"
+              }
+            ]
+          }
         },
         {
           "type": "STRING",
@@ -120,16 +140,53 @@
         }
       ]
     },
-    "string_parts": {
-      "type": "CHOICE",
+    "string_two_quotes": {
+      "type": "SEQ",
       "members": [
+        {
+          "type": "STRING",
+          "value": "''"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "string_interp"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[^\\$']+"
+              },
+              {
+                "type": "PATTERN",
+                "value": "\\$[^{]"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "''"
+        }
+      ]
+    },
+    "string_interp": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "${"
+        },
         {
           "type": "SYMBOL",
           "name": "expr"
         },
         {
-          "type": "PATTERN",
-          "value": "[^\"]*"
+          "type": "STRING",
+          "value": "}"
         }
       ]
     },
