@@ -121,8 +121,17 @@
       ]
     },
     "string_parts": {
-      "type": "PATTERN",
-      "value": "(^\"|.)*"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "expr"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^\"]*"
+        }
+      ]
     },
     "any_token": {
       "type": "PATTERN",
@@ -167,4 +176,3 @@
   "externals": [],
   "inline": []
 }
-

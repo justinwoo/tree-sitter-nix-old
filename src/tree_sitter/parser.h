@@ -92,7 +92,7 @@ struct TSLanguage {
   struct {
     const bool *states;
     const TSSymbol *symbol_map;
-    void *(*create)(void);
+    void *(*create)();
     void (*destroy)(void *);
     bool (*scan)(void *, TSLexer *, const bool *symbol_whitelist);
     unsigned (*serialize)(void *, char *);

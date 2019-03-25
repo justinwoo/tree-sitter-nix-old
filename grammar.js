@@ -34,7 +34,10 @@ module.exports = grammar({
 
     string_double_quoted: $ => seq('"', $.string_parts, '"'),
 
-    string_parts: $ => /.*/,
+    string_parts: $ => choice(
+      $.expr,
+      /[^"]*/ // no escapes in my kingdom
+    ),
 
     // Basic tokens
     //https://github.com/NixOS/nix/blob/master/src/libexpr/lexer.l#L90
