@@ -7,7 +7,7 @@ gnumake
 ---
 
 (source_file
-  (expr (expr_simple (identifier))))
+ (expr (expr_simple (identifier))))
 
 =====================================
 Integers
@@ -18,7 +18,7 @@ Integers
 ---
 
 (source_file
-  (expr (expr_simple (integer))))
+ (expr (expr_simple (integer))))
 
 
 =====================================
@@ -30,7 +30,7 @@ Double quoted strings
 ---
 
 (source_file
-  (expr (expr_simple (string_double_quoted))))
+ (expr (expr_simple (string_double_quoted))))
 
 =====================================
 Double quoted string with interpolated expression
@@ -41,7 +41,7 @@ Double quoted string with interpolated expression
 ---
 
 (source_file
-  (expr (expr_simple (string_double_quoted
+ (expr (expr_simple (string_double_quoted
                      (string_interp (expr (expr_simple (integer))))))))
 
 =====================================
@@ -53,7 +53,7 @@ Double quoted string with shell vars
 ---
 
 (source_file
-  (expr (expr_simple (string_double_quoted))))
+ (expr (expr_simple (string_double_quoted))))
 
 =====================================
 Two quotes strings
@@ -64,7 +64,7 @@ Two quotes strings
 ---
 
 (source_file
-  (expr (expr_simple (string_two_quotes))))
+ (expr (expr_simple (string_two_quotes))))
 
 =====================================
 Two quotes strings interp
@@ -75,7 +75,7 @@ Two quotes strings interp
 ---
 
 (source_file
-  (expr (expr_simple (string_two_quotes
+ (expr (expr_simple (string_two_quotes
                      (string_interp (expr (expr_simple (string_double_quoted))))))))
 
 =====================================
@@ -87,19 +87,19 @@ Two quotes strings with shell vars
 ---
 
 (source_file
-  (expr (expr_simple (string_two_quotes))))
+ (expr (expr_simple (string_two_quotes))))
 
 =====================================
 let-in statement
 =====================================
 
 let
-  a = 1;
+a = 1;
 in
-  a
+a
 
 ---
 
 (source_file
-  (expr (expr_let_in (binding (identifier) (expr (expr_simple (integer))))
-                     (expr (expr_simple (identifier))))))
+ (expr (expr_let_in (binding (identifier) (expr (expr_simple (integer))))
+                    (expr (expr_simple (identifier))))))
