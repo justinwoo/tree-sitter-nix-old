@@ -1,8 +1,12 @@
 module.exports = grammar({
   name: "nix",
 
+  extras: $ => [$.comment, /[\s\uFEFF\u2060\u200B\u00A0]/],
+
   rules: {
     source_file: $ => repeat($.expr),
+
+    comment: $ => token(seq("#", /.*/)),
 
     expr: $ =>
       choice($.expr_parens, $.expr_let_in, $.set_fun, $.with, $.expr_simple),
@@ -19,6 +23,7 @@ module.exports = grammar({
       choice(
         $.boolean,
         $.null,
+        $.bind_set,
         $.rec_set,
         $.set,
         $.identifier,
@@ -88,6 +93,7 @@ module.exports = grammar({
     set_access: $ => seq($.set, ".", $.identifier),
     set: $ => seq("{", repeat(choice($.binding, $.inherit)), "}"),
     rec_set: $ => seq("rec", $.set),
+    bind_set: $ => seq($.identifier, "@", $.set),
     inherit: $ => seq("inherit", repeat1($.expr), ";"),
 
     boolean: $ => choice("true", "false"),

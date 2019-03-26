@@ -85,3 +85,17 @@ Set function with rest arg
  (expr (set_fun (arg_set (arg_set_attr (identifier))
                          (arg_set_rest))
                 (expr (expr_simple (integer))))))
+
+
+=====================================
+Set function with set binding
+=====================================
+
+a@{}: 1
+
+---
+
+(source_file
+ (expr (set_fun (arg_set (arg_set_attr (identifier))
+                         (arg_set_rest))
+                (expr (expr_simple (integer))))))

@@ -8,6 +8,22 @@
         "name": "expr"
       }
     },
+    "comment": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "#"
+          },
+          {
+            "type": "PATTERN",
+            "value": ".*"
+          }
+        ]
+      }
+    },
     "expr": {
       "type": "CHOICE",
       "members": [
@@ -120,6 +136,10 @@
         {
           "type": "SYMBOL",
           "name": "null"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "bind_set"
         },
         {
           "type": "SYMBOL",
@@ -527,6 +547,23 @@
         }
       ]
     },
+    "bind_set": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "@"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "set"
+        }
+      ]
+    },
     "inherit": {
       "type": "SEQ",
       "members": [
@@ -599,8 +636,12 @@
   },
   "extras": [
     {
+      "type": "SYMBOL",
+      "name": "comment"
+    },
+    {
       "type": "PATTERN",
-      "value": "\\s"
+      "value": "[\\s﻿⁠​ ]"
     }
   ],
   "conflicts": [],
