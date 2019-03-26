@@ -2,11 +2,8 @@
   "name": "nix",
   "rules": {
     "source_file": {
-      "type": "REPEAT",
-      "content": {
-        "type": "SYMBOL",
-        "name": "expr"
-      }
+      "type": "SYMBOL",
+      "name": "expr"
     },
     "comment": {
       "type": "TOKEN",
@@ -29,11 +26,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "expr_parens"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "expr_let_in"
+          "name": "anon_fun"
         },
         {
           "type": "SYMBOL",
@@ -41,11 +34,61 @@
         },
         {
           "type": "SYMBOL",
+          "name": "bind_set_fun"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "set_bind_fun"
+        },
+        {
+          "type": "SYMBOL",
           "name": "with"
         },
         {
           "type": "SYMBOL",
-          "name": "expr_simple"
+          "name": "let_in"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr_if"
+        }
+      ]
+    },
+    "expr_if": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "if"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr"
+            },
+            {
+              "type": "STRING",
+              "value": "then"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr"
+            },
+            {
+              "type": "STRING",
+              "value": "else"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr_op"
         }
       ]
     },
@@ -93,30 +136,6 @@
         }
       ]
     },
-    "expr_let_in": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "let"
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "binding"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": "in"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "expr"
-        }
-      ]
-    },
     "expr_select": {
       "type": "CHOICE",
       "members": [
@@ -136,10 +155,6 @@
         {
           "type": "SYMBOL",
           "name": "null"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "bind_set"
         },
         {
           "type": "SYMBOL",
@@ -197,6 +212,30 @@
         {
           "type": "STRING",
           "value": ")"
+        }
+      ]
+    },
+    "let_in": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "let"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "binding"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "in"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr"
         }
       ]
     },
@@ -258,9 +297,76 @@
         }
       ]
     },
+    "anon_fun": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr"
+        }
+      ]
+    },
     "set_fun": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "SYMBOL",
+          "name": "arg_set"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr"
+        }
+      ]
+    },
+    "set_bind_fun": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "arg_set"
+        },
+        {
+          "type": "STRING",
+          "value": "@"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr"
+        }
+      ]
+    },
+    "bind_set_fun": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "@"
+        },
         {
           "type": "SYMBOL",
           "name": "arg_set"
@@ -540,23 +646,6 @@
         {
           "type": "STRING",
           "value": "rec"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "set"
-        }
-      ]
-    },
-    "bind_set": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "identifier"
-        },
-        {
-          "type": "STRING",
-          "value": "@"
         },
         {
           "type": "SYMBOL",

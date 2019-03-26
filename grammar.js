@@ -4,18 +4,29 @@ module.exports = grammar({
   extras: $ => [$.comment, /[\s\uFEFF\u2060\u200B\u00A0]/],
 
   rules: {
-    source_file: $ => repeat($.expr),
+    source_file: $ => $.expr,
 
     comment: $ => token(seq("#", /.*/)),
 
-    expr: $ =>
-      choice($.expr_parens, $.expr_let_in, $.set_fun, $.with, $.expr_simple),
+    expr: $ => choice(
+      $.anon_fun, // a: expr
+      $.set_fun, // {}: expr
+      $.bind_set_fun, // a@{}: expr
+      $.set_bind_fun, // {}@a: expr
+      // $.assert I dont use this
+      $.with,
+      $.let_in,
+      $.expr_if
+    ),
+
+    expr_if: $ => choice(
+      seq('if', $.expr, 'then', $.expr, 'else', $.expr),
+      $.expr_op,
+    ),
 
     expr_op: $ => choice(seq("-", $.expr_op), $.expr_app),
 
     expr_app: $ => choice(seq($.expr_app, $.expr_select), $.expr_select),
-
-    expr_let_in: $ => seq("let", repeat1($.binding), "in", $.expr),
 
     expr_select: $ => choice($.expr_simple),
 
@@ -23,7 +34,6 @@ module.exports = grammar({
       choice(
         $.boolean,
         $.null,
-        $.bind_set,
         $.rec_set,
         $.set,
         $.identifier,
@@ -38,6 +48,8 @@ module.exports = grammar({
 
     expr_parens: $ => seq("(", $.expr, ")"),
 
+    let_in: $ => seq("let", repeat1($.binding), "in", $.expr),
+
     with: $ => seq("with", $.expr, ";"),
 
     binding_anon_fun: $ =>
@@ -45,7 +57,12 @@ module.exports = grammar({
 
     fun_arg: $ => seq($.identifier, ":"),
 
+    anon_fun: $ => seq($.identifier, ":", $.expr),
+
     set_fun: $ => seq($.arg_set, ":", $.expr),
+
+    set_bind_fun: $ => seq($.arg_set, "@", $.identifier, ':', $.expr),
+    bind_set_fun: $ => seq($.identifier, "@", $.arg_set, ':', $.expr),
 
     arg_set: $ =>
       seq(
@@ -93,7 +110,6 @@ module.exports = grammar({
     set_access: $ => seq($.set, ".", $.identifier),
     set: $ => seq("{", repeat(choice($.binding, $.inherit)), "}"),
     rec_set: $ => seq("rec", $.set),
-    bind_set: $ => seq($.identifier, "@", $.set),
     inherit: $ => seq("inherit", repeat1($.expr), ";"),
 
     boolean: $ => choice("true", "false"),
