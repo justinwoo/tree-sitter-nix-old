@@ -1,8 +1,12 @@
 module.exports = grammar({
   name: "nix",
 
+  extras: $ => [$.comment, /[\s\uFEFF\u2060\u200B\u00A0]/],
+
   rules: {
     source_file: $ => repeat($.expr),
+
+    comment: $ => token(seq("#", /.*/)),
 
     expr: $ =>
       choice($.expr_parens, $.expr_let_in, $.set_fun, $.with, $.expr_simple),
