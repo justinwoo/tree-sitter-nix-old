@@ -1,0 +1,74 @@
+=====================================
+Empty set
+=====================================
+
+{}
+
+---
+
+(source_file
+ (expr (expr_simple (set))))
+
+=====================================
+Set 1
+=====================================
+
+{ a = 1; }
+
+---
+
+(source_file
+ (expr (expr_simple (set (binding (identifier)
+                                  (expr (expr_simple (integer))))))))
+
+=====================================
+Set 2
+=====================================
+
+{
+a = 1;
+b = 2;
+}
+
+---
+
+(source_file
+ (expr (expr_simple (set (binding (identifier)
+                                  (expr (expr_simple (integer))))
+                         (binding (identifier)
+                                  (expr (expr_simple (integer))))))))
+
+=====================================
+Recursive Set
+=====================================
+
+rec { a = 1; }
+
+---
+
+(source_file
+ (expr (expr_simple (rec_set (set (binding (identifier)
+                                           (expr (expr_simple (integer)))))))))
+
+=====================================
+Inherit 1 in Set
+=====================================
+
+{ inherit x; }
+
+---
+
+(source_file
+ (expr (expr_simple (set (inherit (expr (expr_simple (identifier))))))))
+
+=====================================
+Inherit 1 in Set
+=====================================
+
+{ inherit x y; }
+
+---
+
+(source_file
+ (expr (expr_simple (set (inherit (expr (expr_simple (identifier)))
+                                  (expr (expr_simple (identifier)))))))) 

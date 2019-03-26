@@ -4,7 +4,8 @@ module.exports = grammar({
   rules: {
     source_file: $ => repeat($.expr),
 
-    expr: $ => choice($.expr_let_in, $.expr_simple),
+    expr: $ =>
+      choice($.expr_parens, $.expr_let_in, $.set_fun, $.with, $.expr_simple),
 
     expr_op: $ => choice(seq("-", $.expr_op), $.expr_app),
 
@@ -16,6 +17,10 @@ module.exports = grammar({
 
     expr_simple: $ =>
       choice(
+        $.boolean,
+        $.null,
+        $.rec_set,
+        $.set,
         $.identifier,
         $.integer,
         $.float,
@@ -26,7 +31,32 @@ module.exports = grammar({
         $.uri
       ),
 
-    binding: $ => seq($.identifier, "=", $.expr, ";"),
+    expr_parens: $ => seq("(", $.expr, ")"),
+
+    with: $ => seq("with", $.expr, ";"),
+
+    binding_anon_fun: $ =>
+      seq($.identifier, "=", repeat1($.fun_arg), $.expr, ";"),
+
+    fun_arg: $ => seq($.identifier, ":"),
+
+    set_fun: $ => seq($.arg_set, ":", $.expr),
+
+    arg_set: $ =>
+      seq(
+        "{",
+        commaSep($.arg_set_attr),
+        optional(","),
+        optional($.arg_set_rest),
+        "}"
+      ),
+
+    arg_set_attr: $ => choice(seq($.identifier, "?", $.expr), $.identifier),
+
+    arg_set_rest: $ => "...",
+
+    binding: $ =>
+      choice(seq($.identifier, "=", $.expr, ";"), $.binding_anon_fun),
 
     string_double_quoted: $ =>
       seq(
@@ -55,6 +85,14 @@ module.exports = grammar({
 
     string_interp: $ => seq("${", $.expr, "}"),
 
+    set_access: $ => seq($.set, ".", $.identifier),
+    set: $ => seq("{", repeat(choice($.binding, $.inherit)), "}"),
+    rec_set: $ => seq("rec", $.set),
+    inherit: $ => seq("inherit", repeat1($.expr), ";"),
+
+    boolean: $ => choice("true", "false"),
+    null: $ => "null",
+
     // Basic tokens
     //https://github.com/NixOS/nix/blob/master/src/libexpr/lexer.l#L90
     any_token: $ => /.|\n/,
@@ -68,3 +106,12 @@ module.exports = grammar({
       /[a-zA-Z][a-zA-Z0-9\+\-\.]*:[a-zA-Z0-9%\/\?:@\&=\+\$,\-_\.\!\~\*\']+/
   }
 });
+
+//github.com/tree-sitter/tree-sitter-javascript/blob/d4f8134060a4e35e1376c30a5a951ebd79fa9978/grammar.js
+https: function commaSep1(rule) {
+  return seq(rule, repeat(seq(",", rule)));
+}
+
+function commaSep(rule) {
+  return optional(commaSep1(rule));
+}

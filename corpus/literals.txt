@@ -19,3 +19,36 @@ Integers
 
 (source_file
  (expr (expr_simple (integer))))
+
+=====================================
+Boolean true
+=====================================
+
+true
+
+---
+
+(source_file
+ (expr (expr_simple (boolean))))
+
+=====================================
+Boolean false
+=====================================
+
+false
+
+---
+
+(source_file
+ (expr (expr_simple (boolean))))
+
+=====================================
+Null
+=====================================
+
+null
+
+---
+
+(source_file
+ (expr (expr_simple (null))))

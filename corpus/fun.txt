@@ -1,0 +1,87 @@
+=====================================
+Anonymous function 1 binding
+=====================================
+
+let
+hi = a: "no";
+in
+"no"
+
+---
+
+(source_file
+ (expr (expr_let_in
+        (binding (binding_anon_fun (identifier)
+                                   (fun_arg (identifier))
+                                   (expr (expr_simple (string_double_quoted)))))
+        (expr (expr_simple (string_double_quoted))))))
+
+=====================================
+Anonymous function 2 binding
+=====================================
+
+let
+hi = a: "no";
+bye = b: "yes";
+in
+"no"
+
+---
+
+(source_file
+ (expr (expr_let_in
+        (binding (binding_anon_fun (identifier)
+                                   (fun_arg (identifier))
+                                   (expr (expr_simple (string_double_quoted)))))
+        (binding (binding_anon_fun (identifier)
+                                   (fun_arg (identifier))
+                                   (expr (expr_simple (string_double_quoted)))))
+        (expr (expr_simple (string_double_quoted))))))
+
+=====================================
+Set function empty
+=====================================
+
+{}: 1
+
+---
+
+(source_file
+ (expr (set_fun (arg_set) (expr (expr_simple (integer))))))
+
+=====================================
+Set function with 1 arg
+=====================================
+
+{x}: 1
+
+---
+
+(source_file
+ (expr (set_fun (arg_set (arg_set_attr (identifier)))
+                (expr (expr_simple (integer))))))
+
+=====================================
+Set function with optional arg
+=====================================
+
+{x ? 1}: 1
+
+---
+
+(source_file
+ (expr (set_fun (arg_set (arg_set_attr (identifier) (expr (expr_simple (integer)))))
+                (expr (expr_simple (integer))))))
+
+=====================================
+Set function with rest arg
+=====================================
+
+{x, ...}: 1
+
+---
+
+(source_file
+ (expr (set_fun (arg_set (arg_set_attr (identifier))
+                         (arg_set_rest))
+                (expr (expr_simple (integer))))))
